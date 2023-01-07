@@ -13,11 +13,11 @@ if __name__ == "__main__":
                                               print_progress_bar=True)
     print(f"Password for file 'digit_password.zip' is: {digit_password}")
     print("Uppercase letter password:")
-    uppercase_letter_password = brute_force_zip_password(zip_file_name="./resources/upper_case_letters_password.zip",
+    uppercase_letter_password = brute_force_zip_password(zip_file_name="resources/uppercase_letters_password.zip",
                                                          source=choose_selected_values_to_generate_password(
                                                              lowercase=False, uppercase=True),
                                                          print_progress_bar=True)
-    print(f"Password for file 'upper_case_letters_password.zip' is: {uppercase_letter_password}")
+    print(f"Password for file 'uppercase_letters_password.zip' is: {uppercase_letter_password}")
     print("Letters and digits password:")
     letters_and_digits_password = brute_force_zip_password(zip_file_name="./resources/letters_and_digits_password.zip",
                                                            source=choose_selected_values_to_generate_password(
