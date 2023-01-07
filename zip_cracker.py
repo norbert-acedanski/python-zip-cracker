@@ -21,7 +21,7 @@ def choose_selected_values_to_generate_password(lowercase: bool = True, uppercas
     return source_string
 
 
-def get_generators(source: str, min_length: int = 1, max_length: int = 5) -> Iterator[str]:
+def _get_generators(source: str, min_length: int = 1, max_length: int = 5) -> Iterator[str]:
     if min_length > max_length:
         raise ValueError("Minimum length should be lower or equal to maximum length!")
     if min_length <= 0:
@@ -39,7 +39,7 @@ def brute_force_zip_password(zip_file_name: str, source: str, min_length: int = 
         if print_progress_bar:
             total_number_of_combinations = sum([pow(source_length, power) for power in range(min_length, max_length + 1)])
             current_number_of_combinations = 0
-        for generator in get_generators(source=source, min_length=min_length, max_length=max_length):
+        for generator in _get_generators(source=source, min_length=min_length, max_length=max_length):
             for password in generator:
                 password = "".join(password)
                 try:
