@@ -1,6 +1,8 @@
 import itertools
 import string
 import zipfile
+
+from threading import Event, Thread
 from typing import Union, Iterator
 
 
@@ -39,22 +41,34 @@ def brute_force_zip_password(zip_file_name: str, source: str, min_length: int = 
         if print_progress_bar:
             total_number_of_combinations = sum([pow(source_length, power) for power in range(min_length, max_length + 1)])
             current_number_of_combinations = 0
+            event = Event()
+            password = ""
+
+            def progress_bar():
+                while True:
+                    progress = current_number_of_combinations
+                    percent = 100*(progress/float(total_number_of_combinations))
+                    bar = "█"*int(percent) + "-"*(100 - int(percent))
+                    print(f"\r|{bar}| {percent:.2f}% {progress}/{total_number_of_combinations}: {password}", end="\r")
+                    if event.is_set():
+                        break
+            print_thread = Thread(target=progress_bar)
+            print_thread.start()
+
         for generator in _get_generators(source=source, min_length=min_length, max_length=max_length):
             for password in generator:
                 password = "".join(password)
                 try:
                     source_file.extractall(pwd=password.encode())
-                    print()
+                    if print_progress_bar:
+                        event.set()
+                        print_thread.join()
+                        progress_bar()
+                        print()
                     return password
                 except:
                     if print_progress_bar:
                         current_number_of_combinations += 1
-                        progress_bar(progress=current_number_of_combinations, total=total_number_of_combinations)
                     continue
         return None
-
-    def progress_bar(progress, total):
-        percent = 100*(progress/float(total))
-        bar = "█"*int(percent) + "-"*(100 - int(percent))
-        print(f"\r|{bar}| {percent:.2f}% {progress}/{total}", end="\r")
     return loop_function()
