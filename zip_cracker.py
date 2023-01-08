@@ -32,9 +32,9 @@ def _get_generators(source: str, min_length: int = 1, max_length: int = 5) -> It
         yield itertools.product(source, repeat=current_length)
 
 
-def brute_force_zip_password(zip_file_name: str, source: str, min_length: int = 1, max_length: int = 5,
+def brute_force_zip_password(zip_file_path: str, source: str, min_length: int = 1, max_length: int = 5,
                              print_progress_bar: bool = False) -> Union[None, str]:
-    source_file = zipfile.ZipFile(zip_file_name)
+    source_file = zipfile.ZipFile(zip_file_path)
     source_length = len(source)
 
     def loop_function():
